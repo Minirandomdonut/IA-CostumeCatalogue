@@ -1,0 +1,23 @@
+# --- Real business data: never publish ---
+# HALLOWEEN.xls and the working catalogue hold the actual supplier names and
+# cost prices of a live shop. The IA anonymises the business; this repo must too.
+*.xls
+*.xlsx
+catalogue.json
+
+# --- Assessed work: not published before submission ---
+# The IA write-up itself stays off GitHub so it cannot be copied by other students.
+*.pdf
+IA_criterion_D_handoff.md
+
+# --- Superseded work ---
+# The abandoned first IA (House Tracker), archived 2026-08-28.
+archive_old_ia_2026-08-28/
+
+# --- Local environment ---
+.venv/
+.idea/
+.claude/
+__pycache__/
+*.pyc
+.DS_Store
