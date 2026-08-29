@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Catrina dress, adult M",
+    "category": "Dia de Muertos",
+    "supplier": "Supplier A",
+    "cost": 275,
+    "wholesale": 0,
+    "retail": null,
+    "photo_path": null,
+    "manual_retail": false
+  },
+  {
+    "name": "Charro suit, child 8",
+    "category": "Regional",
+    "supplier": "Supplier B",
+    "cost": 200,
+    "wholesale": 0,
+    "retail": null,
+    "photo_path": null,
+    "manual_retail": false
+  },
+  {
+    "name": "Jalisco folk skirt",
+    "category": "Regional",
+    "supplier": "Supplier B",
+    "cost": 180,
+    "wholesale": 0,
+    "retail": 400,
+    "photo_path": null,
+    "manual_retail": true
+  },
+  {
+    "name": "Skeleton mask, painted",
+    "category": "Dia de Muertos",
+    "supplier": "Supplier C",
+    "cost": 45,
+    "wholesale": 0,
+    "retail": null,
+    "photo_path": null,
+    "manual_retail": false
+  }
+]
