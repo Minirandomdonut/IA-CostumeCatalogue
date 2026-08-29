@@ -95,12 +95,12 @@ The program addresses this by providing:
 ## Technologies Used
 
 * Python 3
-* Tkinter (GUI)
-* `json` (persistent storage)
-* `math.ceil` (price rounding)
-* `difflib.SequenceMatcher` (fuzzy search)
-* `openpyxl` / `xlrd` (Excel import, including legacy `.xls`)
-* PDF generation library (export module)
+* Tkinter
+* `json`
+* `math.ceil`
+* `difflib.SequenceMatcher`
+* `openpyxl` / `xlrd`
+* PDF generation library
 
 ---
 
