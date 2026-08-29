@@ -12,27 +12,31 @@
 
 ## Project Overview
 
-<!-- VICTOR — WRITE THIS YOURSELF (3–5 sentences, your own words).
-     Say what the program is and who it is for. Points you can draw on:
-       - a desktop catalogue program for a costume and regional-dress shop in Mexico City
-       - the shop's stock currently lives in unstructured Excel sheets (~1,900 products)
-       - the program stores products, prices them automatically, imports the old sheets,
-         searches them, and exports category price lists
-     Do not copy these bullets across — rewrite them as your own sentences. -->
+Costume Catalogue is management software developed entirely in Python as part of
+the International Baccalaureate (IB) Computer Science Internal Assessment (IA).
+
+The objective of this project is to provide a clothing business with an updated
+database capable of computing price calculations, importing old Excel lists,
+searching them and exporting product registers for client usage fast and efficiently.
+
+Unlike traditional Excel lists, this interface is friendly for people inexperienced
+with lists and is tolerant of misspelled words. Moreover, it allows for local management,
+which means the users do not require an internet connection for it.
 
 ---
 
 ## Problem Statement
 
-<!-- VICTOR — WRITE THIS YOURSELF (one short paragraph + the bullet list below).
-     Explain the problem in the client's terms: what goes wrong today, and why a
-     spreadsheet is not enough. Things you found in the real data:
-       - prices are recalculated by hand, so they drift and go stale
-       - the same product appears on several sheets at different prices
-       - rows are inconsistent: "OFERTA" written where a price should be, blank-name
-         size-variant rows, title rows sitting in the middle of a sheet
-       - nothing links a product to a photo
-       - finding one product means scrolling, and a misspelling finds nothing -->
+The owner of a shop business in downtown Mexico City has experienced growth in retail customers since the pandemic,
+as a result, coordination with clients and providers has become increasingly messy. Prices for ~1900 products live in
+inconsistently formatted and separate Excel lists, so when a supplier changes cost, cost and retail prices must be
+rewritten by hand everywhere. Moreover, when clients ask about costume information, employees have to look at these lists
+again and create versions for the clients, with photos. These methods are prone to human errors, which are quite common
+on the lists: mixed results, wrong computations, wasted opportunity cost for the staff and slow responses for the
+clients. As a matter of fact, many of these lists were outdated or had price errors. Alternatives such as better Excel
+organization fail as they cannot search misspelled words, hold product exceptions or easily purge legacy data.
+
+
 
 The program addresses this by providing:
 
@@ -104,14 +108,13 @@ The program addresses this by providing:
 
 This project applies the following Computer Science concepts:
 
-* Object-Oriented Programming — `Product`, `Catalogue`, `Storage`, and one class per module.
-* Separation of concerns — the pricing constants and the save/load logic each exist in exactly one place.
-* Algorithm design and justification — a deliberate linear scan for search, with its cost argued rather than hidden.
+* Object-Oriented Programming (OOP)
+* Problem decomposition
+* Algorithmic design and justification
 * File handling and data persistence.
-* Handling messy real-world input, including partial and malformed records.
+* Handling messy real-world inputs.
 * Event-driven GUI programming.
-* Systematic testing against defined success criteria — normal, boundary and abnormal cases.
-
+* Testing and iterative development.
 ---
 
 ## Development
@@ -174,16 +177,8 @@ cp sample_catalogue.json catalogue.json
 
 ## Academic Integrity Statement
 
-<!-- VICTOR — WRITE THIS YOURSELF. This is the section that matters most, so it has to
-     be in your voice, not a template. Cover, in your own sentences:
-       - this is your IB Computer Science IA at Tecnológico de Monterrey CCM
-       - the code in this repository is written by you
-       - why the repository exists: it is a dated record of how the program was built,
-         one commit per Record of Tasks milestone
-       - the design documents in figures/ were made on 28 August 2026, before this
-         repository was created, so the first commits import existing work rather than
-         create it — say that plainly
-       - the client is a real shop; the business is anonymised in the IA, and its real
-         product data (HALLOWEEN.xls) and working catalogue are deliberately excluded
-         from this repository
-     Then sign it. -->
+This project was developed as part of the International Baccalaureate (IB) Computer Science Internal Assessment at Tecnológico de Monterrey, Campus Ciudad de México.
+The client is a real shop, and its private information is deliberately kept out for privacy concerns.
+I confirm that this work is my own work, registered as it has evolved. I have acknowledged each use of the words or ideas of another person, whether written, oral or visual.
+
+-Mini
