@@ -18,37 +18,44 @@ class Product:
 
     def to_dict(self):
         return {"name": self._name, "category": self._category,
-                         "supplier": self._supplier, "cost": self._cost,
-                         "wholesale": self._wholesale, "retail": self._retail,
-                         "photo_path": self._photo_path, "manual_retail": self._manual_retail}
+                "supplier": self._supplier, "cost": self._cost,
+                "wholesale": self._wholesale, "retail": self._retail,
+                "photo_path": self._photo_path, "manual_retail": self._manual_retail}
+
     @classmethod
     def from_dict(cls, d):
         product = cls(d['name'], d['category'], d['supplier'],
-                                  d['cost'], d['photo_path'], d['retail'])
+                      d['cost'], d['photo_path'], d['retail'])
         product._wholesale = d['wholesale']
         product._manual_retail = d['manual_retail']
         return product
+
     def category(self):
         return self._category
 
 class Catalogue:
     def __init__(self):
-        self._products =[]
+        self._products = []
+
     def add(self, product):
         self._products.append(product)
+
     def delete(self, product):
         self._products.remove(product)
+
     def edit(self, product):
+    # RoT 16: if cost changed, call PricingModule.compute(product)
         pass
-        #"Record of Tasks 16: if cost is changed, call PricingModule.compute(product)"
+
     def get_category(self, name):
         result = []
         for product in self._products:
             if product.category() == name:
                 result.append(product)
         return result
+
     def products(self):
-        return self._products
+        return list(self._products)
 
 class Storage:
     def save(self, catalogue):

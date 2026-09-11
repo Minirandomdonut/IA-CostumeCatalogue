@@ -21,3 +21,6 @@ archive_old_ia_2026-08-28/
 __pycache__/
 *.pyc
 .DS_Store
+
+# Temporary dev harness (SC3 checks; not part of the submission)
+dev_harness.py
