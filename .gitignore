@@ -24,3 +24,6 @@ __pycache__/
 
 # Temporary dev harness (SC3 checks; not part of the submission)
 dev_harness.py
+
+# Working notes between sessions: never publish
+*_corrections.md
