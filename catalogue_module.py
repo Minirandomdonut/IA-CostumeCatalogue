@@ -16,7 +16,21 @@ class Product:
         self._manual_retail = retail is not None
         self._photo_path = photo_path
 
-#noinspection PyProtectedMember
+    def to_dict(self):
+        return {"name": self._name, "category": self._category,
+                         "supplier": self._supplier, "cost": self._cost,
+                         "wholesale": self._wholesale, "retail": self._retail,
+                         "photo_path": self._photo_path, "manual_retail": self._manual_retail}
+    @classmethod
+    def from_dict(cls, d):
+        product = cls(d['name'], d['category'], d['supplier'],
+                                  d['cost'], d['photo_path'], d['retail'])
+        product._wholesale = d['wholesale']
+        product._manual_retail = d['manual_retail']
+        return product
+    def category(self):
+        return self._category
+
 class Catalogue:
     def __init__(self):
         self._products =[]
@@ -30,30 +44,26 @@ class Catalogue:
     def get_category(self, name):
         result = []
         for product in self._products:
-            if product._category == name:
+            if product.category() == name:
                 result.append(product)
         return result
+    def products(self):
+        return self._products
 
-# noinspection PyProtectedMember
 class Storage:
     def save(self, catalogue):
         data = []
-        for product in catalogue._products:
-            data.append({"name": product._name, "category": product._category,
-                         "supplier": product._supplier, "cost": product._cost,
-                         "wholesale": product._wholesale, "retail": product._retail,
-                         "photo_path": product._photo_path, "manual_retail": product._manual_retail})
-        json.dump(data, open(FILE_PATH, "w"))
+        for product in catalogue.products():
+            data.append(product.to_dict())
+        with open(FILE_PATH, "w") as f:
+            json.dump(data, f)
 
     def load(self):
         if not os.path.exists(FILE_PATH):
             return Catalogue()
-        data = json.load(open(FILE_PATH))
+        with open(FILE_PATH) as f:
+            data = json.load(f)
         catalogue = Catalogue()
         for d in data:
-            product = Product(d["name"], d["category"], d["supplier"],
-                              d["cost"], d["photo_path"], d["retail"])
-            product._wholesale = d["wholesale"]
-            product._manual_retail = d["manual_retail"]
-            catalogue.add(product)
+            catalogue.add(Product.from_dict(d))
         return catalogue

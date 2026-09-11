@@ -121,14 +121,16 @@ def build():
         "Catalogue",
         ["-products : list of Product"],
         ["+add(product)", "+edit(product)", "+delete(product)",
-         "+get_category(name)"],
+         "+get_category(name)", "+products()"],
         cx=510, top=300)
+    # Rev 2026-09-10 (Criterion D encapsulation fix): Product serializes itself
+    # and exposes category(); Catalogue exposes products().
     product = d.class_box(
         "Product",
         ["-name : str", "-category : str", "-supplier : str", "-cost : float",
          "-wholesale : float", "-retail : float", "-manual_retail : bool",
          "-photo_path : str"],
-        [],
+        ["+to_dict()", "+from_dict(data)", "+category()"],
         cx=880, top=280)
     search = d.class_box("SearchModule", [], ["+search(query) list"],
                          cx=150, top=300)
@@ -155,12 +157,12 @@ def build():
     # 3. Catalogue ..> PricingModule : calls on cost change
     d.polyline([(catalogue["right"], 420), (710, 420), (710, 615),
                 (pricing["left"], 615)], dashed=True, arrow=True)
-    d.label(719, 520, "calls on cost change", "start")
+    d.label(719, 560, "calls on cost change", "start")
 
     # 4. PricingModule ..> Product : sets Pw and Pr
     d.polyline([(pricing["cx"], pricing["top"]),
                 (pricing["cx"], product["bottom"])], dashed=True, arrow=True)
-    d.label(pricing["cx"] + 9, 535, "sets Pw and Pr", "start")
+    d.label(pricing["cx"] + 9, 572, "sets Pw and Pr", "start")
 
     # 5. ImportModule ..> Catalogue : adds products
     d.polyline([(imp["cx"], imp["top"]), (imp["cx"], catalogue["bottom"])],
