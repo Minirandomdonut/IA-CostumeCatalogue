@@ -119,8 +119,8 @@ def build():
                           cx=880, top=60)
     catalogue = d.class_box(
         "Catalogue",
-        ["-products : list of Product"],
-        ["+add(product)", "+edit(product)", "+delete(product)",
+        ["-products : list of Product", "-pricing : PricingModule"],
+        ["+add(product)", "+edit(product, changes)", "+delete(product)",
          "+get_category(name)", "+products()"],
         cx=510, top=300)
     # Rev 2026-09-10 (Criterion D encapsulation fix): Product serializes itself
@@ -130,16 +130,22 @@ def build():
         ["-name : str", "-category : str", "-supplier : str", "-cost : float",
          "-wholesale : float", "-retail : float", "-manual_retail : bool",
          "-photo_path : str"],
-        ["+to_dict()", "+from_dict(data)", "+category()"],
+        ["+to_dict()", "+from_dict(data)", "+category()", "+cost()",
+         "+manual_retail()", "+set_cost(value)", "+set_wholesale(value)",
+         "+set_retail(value)", "+set_manual_retail(value)"],
         cx=880, top=280)
     search = d.class_box("SearchModule", [], ["+search(query) list"],
                          cx=150, top=300)
     export = d.class_box("ExportModule", [], ["+export_pdf(category, path)"],
                          cx=160, top=470)
-    imp = d.class_box("ImportModule", ["-review_list : list"],
+    # Rev 2026-09-13 (RoT 16-17): Catalogue owns the PricingModule and prices on
+    # add / cost edit; Product shows its getters and setters; ImportModule keeps
+    # the Catalogue it adds into and no longer calls pricing itself.
+    imp = d.class_box("ImportModule",
+                      ["-catalogue : Catalogue", "-review_list : list"],
                       ["+import_file(path, sheet)"], cx=510, top=600)
     pricing = d.class_box("PricingModule", [], ["+compute(product)"],
-                          cx=880, top=600)
+                          cx=880, top=660)
 
     # 1. Catalogue "1" *-- "0..*" Product : contains (composition)
     hy = 350
@@ -155,24 +161,20 @@ def build():
     d.label(709, 200, "saves and loads", "start")
 
     # 3. Catalogue ..> PricingModule : calls on cost change
-    d.polyline([(catalogue["right"], 420), (710, 420), (710, 615),
-                (pricing["left"], 615)], dashed=True, arrow=True)
-    d.label(719, 560, "calls on cost change", "start")
+    d.polyline([(catalogue["right"], 420), (710, 420), (710, 696),
+                (pricing["left"], 696)], dashed=True, arrow=True)
+    d.label(719, 650, "calls on add / cost change", "start")
 
     # 4. PricingModule ..> Product : sets Pw and Pr
     d.polyline([(pricing["cx"], pricing["top"]),
                 (pricing["cx"], product["bottom"])], dashed=True, arrow=True)
-    d.label(pricing["cx"] + 9, 572, "sets Pw and Pr", "start")
+    d.label(pricing["cx"] + 9, 645, "sets Pw and Pr", "start")
 
     # 5. ImportModule ..> Catalogue : adds products
     d.polyline([(imp["cx"], imp["top"]), (imp["cx"], catalogue["bottom"])],
                dashed=True, arrow=True)
     d.label(imp["cx"] + 9, 520, "adds products", "start")
 
-    # 6. ImportModule ..> PricingModule : calls per row
-    d.polyline([(imp["right"], 643), (pricing["left"], 643)],
-               dashed=True, arrow=True)
-    d.label((imp["right"] + pricing["left"]) / 2, 635, "calls per row")
 
     # 7. SearchModule ..> Catalogue : reads
     d.polyline([(search["right"], 336), (catalogue["left"], 336)],

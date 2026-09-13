@@ -97,19 +97,24 @@ END FUNCTION"""
 IMPORT = """FUNCTION IMPORT_FILE(CATALOGUE, PATH, SHEET)
     REVIEW_LIST = empty list
     FOR EACH ROW IN SHEET
-        // an empty cost is not a number, so this also catches missing costs
-        IF ROW.NAME = EMPTY OR NOT IS_NUMBER(ROW.COST) THEN
-            APPEND ROW TO REVIEW_LIST
+        // refinement: the real lists have blank spacer rows; skip, do not review
+        IF EVERY CELL IN ROW IS EMPTY THEN
+            SKIP TO NEXT ROW
+        END IF
+        // IS_NUMBER is false for text, empty cells, zero and negative costs
+        IF ROW.NAME = EMPTY THEN
+            APPEND (ROW, "name missing") TO REVIEW_LIST
+        ELSE IF NOT IS_NUMBER(ROW.COST) THEN
+            APPEND (ROW, "cost missing or not a number") TO REVIEW_LIST
         ELSE
             PRODUCT = NEW PRODUCT(ROW.NAME, ROW.COST, ...)
-            CALL COMPUTE_PRICES(PRODUCT)
+            ADD PRODUCT TO CATALOGUE     // the catalogue calls COMPUTE_PRICES
             IF ROW.RETAIL <> EMPTY THEN
                 IF ROW.RETAIL <> PRODUCT.RETAIL THEN
                     PRODUCT.RETAIL = ROW.RETAIL
                     PRODUCT.MANUAL_RETAIL = TRUE
                 END IF
             END IF
-            ADD PRODUCT TO CATALOGUE
         END IF
     END FOR
     RETURN REVIEW_LIST

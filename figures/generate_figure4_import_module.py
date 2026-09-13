@@ -37,52 +37,61 @@ def predefined2(c, title, subtitle, cx, cy):
 
 
 def build_import():
-    c = Chart(800, 960)
+    # Rev 2026-09-13 (RoT 17): "Blank row?" decision added after "Read next
+    # row" - spacer rows in the real lists are skipped instead of reviewed.
+    c = Chart(800, 1060)
     cx = 430
 
     # vertical spine
     t_start = c.terminator("Import module", cx, 40)                      # N1
     in_file = c.io("Select Excel file", cx, 110)                         # N2
     p_read = c.process("Read next row", cx, 185)                         # N3
-    d_valid = c.decision("Fields valid?", cx, 270)                       # N4
-    p_create = c.process("Create register", cx, 355)                     # N6
+    d_blank = c.decision("Blank row?", cx, 270)                          # N3b
+    d_valid = c.decision("Fields valid?", cx, 360)                       # N4
+    p_create = c.process("Create register", cx, 445)                     # N6
     b_price = predefined2(c, "Pricing module",
-                          "computes Pw and Pr", cx, 440)                 # N7
-    d_retail = c.decision("Retail price in row?", cx, 535)               # N8
-    d_match = c.decision("Row retail = formula?", cx, 635)               # N9
-    d_more = c.decision("More rows?", cx, 760)                           # N11
-    out_list = c.io("Display review list", cx, 845)                      # N12
-    t_ret = c.terminator("Return", cx, 915)                              # N13
+                          "computes Pw and Pr", cx, 530)                 # N7
+    d_retail = c.decision("Retail price in row?", cx, 625)               # N8
+    d_match = c.decision("Row retail = formula?", cx, 725)               # N9
+    d_more = c.decision("More rows?", cx, 850)                           # N11
+    out_list = c.io("Display review list", cx, 935)                      # N12
+    t_ret = c.terminator("Return", cx, 1005)                             # N13
 
     # side nodes
-    p_review = c.process("Add to review list", 650, 270)                 # N5
+    p_review = c.process("Add to review list", 650, 360)                 # N5
     p_manual = process2(c, "Set manual retail",
-                        "keeps row value", 140, 635)                     # N10
+                        "keeps row value", 140, 725)                     # N10
 
     spine(c, t_start, in_file)
     spine(c, in_file, p_read)
-    spine(c, p_read, d_valid)
+    spine(c, p_read, d_blank)
+
+    # N3b: yes -> far right, down to N11 (merges with the N5 exit), no -> N4
+    c.line([right(d_blank), (760, d_blank["cy"]), (760, d_more["cy"]),
+            (p_review["cx"], d_more["cy"])])
+    c.branch_label("yes", right(d_blank)[0] + 14, d_blank["cy"] - 12, "start")
+    c.arrow([bottom(d_blank), top(d_valid)], "no", cx + 8, 320, "start")
 
     # N4: no -> review list (right), yes -> create register (spine)
     c.arrow([right(d_valid), left(p_review)],
-            "no", (right(d_valid)[0] + left(p_review)[0]) / 2, 258)
-    c.arrow([bottom(d_valid), top(p_create)], "yes", cx + 8, 320, "start")
+            "no", (right(d_valid)[0] + left(p_review)[0]) / 2, 348)
+    c.arrow([bottom(d_valid), top(p_create)], "yes", cx + 8, 410, "start")
 
     spine(c, p_create, b_price)
     spine(c, b_price, d_retail)
 
     # N8: yes -> compare retail (spine), no -> bypass right into spine above N11
-    c.arrow([bottom(d_retail), top(d_match)], "yes", cx + 8, 585, "start")
-    c.line([right(d_retail), (590, d_retail["cy"]), (590, 700), (cx, 700)])
+    c.arrow([bottom(d_retail), top(d_match)], "yes", cx + 8, 675, "start")
+    c.line([right(d_retail), (590, d_retail["cy"]), (590, 790), (cx, 790)])
     c.branch_label("no", right(d_retail)[0] + 14, d_retail["cy"] - 12, "start")
 
     # N9: no -> set manual retail (left), yes -> spine down to N11
     c.arrow([left(d_match), right(p_manual)],
-            "no", (left(d_match)[0] + right(p_manual)[0]) / 2, 623)
-    c.arrow([bottom(d_match), top(d_more)], "yes", cx + 8, 690, "start")
+            "no", (left(d_match)[0] + right(p_manual)[0]) / 2, 713)
+    c.arrow([bottom(d_match), top(d_more)], "yes", cx + 8, 780, "start")
 
     # N10 exit merges back into the spine above N11
-    c.line([bottom(p_manual), (p_manual["cx"], 712), (cx, 712)])
+    c.line([bottom(p_manual), (p_manual["cx"], 802), (cx, 802)])
 
     # N5 exit routes down the right side into N11's right vertex
     c.line([bottom(p_review), (p_review["cx"], d_more["cy"])])
@@ -92,7 +101,7 @@ def build_import():
     c.arrow([left(d_more), (30, d_more["cy"]), (30, p_read["cy"]),
              left(p_read)], "yes", left(d_more)[0] - 12, d_more["cy"] - 12,
             "end")
-    c.arrow([bottom(d_more), top(out_list)], "no", cx + 8, 808, "start")
+    c.arrow([bottom(d_more), top(out_list)], "no", cx + 8, 898, "start")
 
     spine(c, out_list, t_ret)
     return c

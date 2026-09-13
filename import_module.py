@@ -31,4 +31,3 @@ class ImportModule:
             return float(value) > 0
         except (ValueError, TypeError):
             return False
-
