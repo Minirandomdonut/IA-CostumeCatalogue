@@ -9,6 +9,7 @@ catalogue.json
 # The IA write-up itself stays off GitHub so it cannot be copied by other students.
 *.pdf
 IA_criterion_D_handoff.md
+import_module_guide.md
 
 # --- Superseded work ---
 # The abandoned first IA (House Tracker), archived 2026-08-28.
@@ -27,3 +28,6 @@ dev_harness.py
 
 # Working notes between sessions: never publish
 *_corrections.md
+
+# Test 12 answer key: contains real cost prices
+test12_answer_key.md
