@@ -1,6 +1,7 @@
 import xlrd
 from catalogue_module import Product
 
+# noinspection PyUnresolvedReferences
 class ImportModule:
     def __init__(self, catalogue):
         self._catalogue = catalogue
