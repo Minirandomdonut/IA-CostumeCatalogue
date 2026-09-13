@@ -31,3 +31,6 @@ dev_harness.py
 
 # Test 12 answer key: contains real cost prices
 test12_answer_key.md
+
+# Development log handed to the writing chat as a file: never publish
+DEVLOG_criterion_D.md
