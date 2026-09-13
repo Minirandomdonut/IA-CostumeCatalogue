@@ -1,5 +1,6 @@
 import os
 import json
+from pricing_module import PricingModule
 
 FILE_PATH = 'catalogue.json'
 
@@ -33,19 +34,48 @@ class Product:
     def category(self):
         return self._category
 
+    def set_cost(self, value):
+        self._cost = value
+
+    def set_wholesale(self, value):
+        self._wholesale = value
+
+    def cost(self):
+        return self._cost
+
+    def manual_retail(self):
+        return self._manual_retail
+
+    def set_retail(self, value):
+        self._retail = value
+
+    def set_manual_retail(self, value):
+        self._manual_retail = value
+
 class Catalogue:
     def __init__(self):
         self._products = []
+        self._pricing = PricingModule()
 
     def add(self, product):
         self._products.append(product)
+        self._pricing.compute(product)
 
     def delete(self, product):
         self._products.remove(product)
 
-    def edit(self, product):
-    # RoT 16: if cost changed, call PricingModule.compute(product)
-        pass
+    def edit(self, product, changes):
+        if "cost" in changes:
+            product.set_cost(changes["cost"])
+            self._pricing.compute(product)
+        if "retail" in changes:
+            if changes["retail"] is None:
+                product.set_manual_retail(False)
+                self._pricing.compute(product)
+            else:
+                product.set_retail(changes["retail"])
+                product.set_manual_retail(True)
+        # Other changes can be added when the UI exists
 
     def get_category(self, name):
         result = []
