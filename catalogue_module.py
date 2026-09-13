@@ -43,6 +43,9 @@ class Product:
     def cost(self):
         return self._cost
 
+    def retail(self):
+        return self._retail
+
     def manual_retail(self):
         return self._manual_retail
 

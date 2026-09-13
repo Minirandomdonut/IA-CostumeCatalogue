@@ -131,7 +131,7 @@ def build():
          "-wholesale : float", "-retail : float", "-manual_retail : bool",
          "-photo_path : str"],
         ["+to_dict()", "+from_dict(data)", "+category()", "+cost()",
-         "+manual_retail()", "+set_cost(value)", "+set_wholesale(value)",
+         "+retail()", "+manual_retail()", "+set_cost(value)", "+set_wholesale(value)",
          "+set_retail(value)", "+set_manual_retail(value)"],
         cx=880, top=280)
     search = d.class_box("SearchModule", [], ["+search(query) list"],

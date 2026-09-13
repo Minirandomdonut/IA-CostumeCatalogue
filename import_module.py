@@ -7,8 +7,13 @@ class ImportModule:
         self._review_list = []
 
     def import_file(self, path, sheet):
-        workbook = xlrd.open_workbook(path)
-        worksheet = workbook.sheet_by_name(sheet)
+        self._review_list = []
+        try:
+            workbook = xlrd.open_workbook(path)
+            worksheet = workbook.sheet_by_name(sheet)
+        except (FileNotFoundError, xlrd.XLRDError) as error:
+            self._review_list.append((0, "(file)", "", f"could not open: {error}"))
+            return self._review_list
         for row_num in range(worksheet.nrows):
             row = worksheet.row_values(row_num)
             if all(cell == "" for cell in row):
@@ -24,6 +29,11 @@ class ImportModule:
             supplier = " ".join(str(row[2]).split())
             product = Product(name, sheet, supplier, float(cost), None)
             self._catalogue.add(product)
+            if len(row) > 4 and self._is_number(row[4]):
+                row_retail = float(row[4])
+                if row_retail != float(product.retail()):
+                    product.set_retail(row_retail)
+                    product.set_manual_retail(True)
         return self._review_list
 
     def _is_number(self, value):
